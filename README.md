@@ -17,24 +17,25 @@
 本專案依照課程模板整理如下：
 
 ```text
-├── README.md                 ← App 介紹與專案說明
-├── build.gradle.kts          ← Android 專案根層 Gradle 設定
-├── settings.gradle.kts       ← Android 專案模組設定
-├── gradle/                   ← Gradle wrapper 與版本設定
-├── gradlew / gradlew.bat     ← Gradle 執行腳本
-├── proposal/                 ← 專題提案繳交區
+114-2_APP-G08/
+├── README.md                 
+├── build.gradle.kts         
+├── settings.gradle.kts      
+├── gradle/                   
+├── gradlew / gradlew.bat    
+├── proposal/                 
 │   └── proposal.md
-├── my-topics/                ← 個人題目探索區
+├── my-topics/                
 │   ├── topic_C112181102.md
 │   ├── topic_C112181103.md
 │   └── topic_C112181144.md
-├── app/                      ← Android Studio 專案原始碼
+├── app/                      
 │   ├── src/
 │   ├── build.gradle.kts
 │   └── proguard-rules.pro
-├── backend/                  ← AWS EC2 後端 API 程式碼，若有使用
+├── backend/                 
 │   └── README.md
-└── docs/                     ← 期末報告與發表文件
+└── docs/                     
     ├── report.md
     └── slides.pdf
 ```
