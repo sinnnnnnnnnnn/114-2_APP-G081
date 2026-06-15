@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>智慧海象船班搭乘指南與停航通知 App</title>
+  <style>
+    :root {
+      --ink: #172033;
+      --muted: #5c667a;
+      --line: #d9e2ef;
+      --paper: #f8fafc;
+      --white: #ffffff;
+      --sea: #0f766e;
+      --blue: #2563eb;
+      --amber: #f59e0b;
+      --coral: #e85d75;
+      --deep: #0f2747;
+      --soft: #e8f3f5;
+      --shadow: 0 18px 50px rgba(23, 32, 51, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      line-height: 1.7;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      border-bottom: 1px solid rgba(217, 226, 239, 0.85);
+      background: rgba(248, 250, 252, 0.92);
+      backdrop-filter: blur(14px);
+    }
+
+    .nav {
+      width: min(1120px, calc(100% - 32px));
+      min-height: 68px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      color: var(--deep);
+    }
+
+    .brand img {
+      width: 40px;
+      height: 40px;
+      border-radius: 9px;
+      box-shadow: 0 8px 20px rgba(15, 118, 110, 0.16);
+    }
+
+    .navlinks {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
+
+    .navlinks a:hover {
+      color: var(--blue);
+    }
+
+    .hero {
+      background:
+        linear-gradient(180deg, rgba(232, 243, 245, 0.92), rgba(248, 250, 252, 1)),
+        url("app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp");
+      background-size: cover, 220px;
+      background-position: center, right 8% center;
+      background-repeat: no-repeat;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hero-inner {
+      width: min(1120px, calc(100% - 32px));
+      min-height: 560px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 390px;
+      align-items: center;
+      gap: 56px;
+      padding: 56px 0;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 18px;
+      color: var(--sea);
+      font-size: 0.94rem;
+      font-weight: 800;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 28px;
+      height: 3px;
+      border-radius: 99px;
+      background: var(--sea);
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 0;
+      color: var(--deep);
+      font-size: clamp(2rem, 5vw, 4.1rem);
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 680px;
+      margin: 22px 0 30px;
+      color: #405064;
+      font-size: 1.12rem;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .button {
+      display: inline-flex;
+      min-height: 46px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--white);
+      color: var(--deep);
+      font-weight: 800;
+      box-shadow: 0 10px 24px rgba(23, 32, 51, 0.08);
+    }
+
+    .button.primary {
+      border-color: var(--blue);
+      background: var(--blue);
+      color: var(--white);
+    }
+
+    .phone {
+      width: min(100%, 360px);
+      margin-left: auto;
+      border: 10px solid #101827;
+      border-radius: 34px;
+      background: #f8fbff;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .phone-top {
+      height: 44px;
+      background: #101827;
+      position: relative;
+    }
+
+    .phone-top::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 12px;
+      width: 88px;
+      height: 8px;
+      transform: translateX(-50%);
+      border-radius: 99px;
+      background: #293243;
+    }
+
+    .screen {
+      padding: 18px;
+    }
+
+    .status-card {
+      border: 1px solid #d5e5ef;
+      border-radius: 8px;
+      background: var(--white);
+      padding: 16px;
+      box-shadow: 0 10px 22px rgba(23, 32, 51, 0.08);
+    }
+
+    .risk {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .risk strong {
+      color: var(--deep);
+      font-size: 1.05rem;
+    }
+
+    .badge {
+      border-radius: 99px;
+      padding: 4px 10px;
+      background: #ecfdf5;
+      color: #047857;
+      font-size: 0.82rem;
+      font-weight: 900;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .metric {
+      min-height: 86px;
+      border: 1px solid #dce7f1;
+      border-radius: 8px;
+      background: #f8fbff;
+      padding: 12px;
+    }
+
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .metric b {
+      display: block;
+      margin-top: 4px;
+      color: var(--deep);
+      font-size: 1.3rem;
+    }
+
+    .schedule-list {
+      margin-top: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .schedule-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      border-radius: 8px;
+      background: #eef6ff;
+      padding: 12px;
+      color: var(--deep);
+      font-size: 0.92rem;
+    }
+
+    .schedule-item em {
+      color: var(--sea);
+      font-style: normal;
+      font-weight: 900;
+    }
+
+    section {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 74px 0;
+    }
+
+    .section-head {
+      max-width: 720px;
+      margin-bottom: 28px;
+    }
+
+    .section-head h2 {
+      margin: 0 0 10px;
+      color: var(--deep);
+      font-size: 2rem;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .feature {
+      min-height: 188px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--white);
+      padding: 22px;
+      box-shadow: 0 12px 28px rgba(23, 32, 51, 0.06);
+    }
+
+    .icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 16px;
+      border-radius: 8px;
+      color: var(--white);
+      font-weight: 900;
+    }
+
+    .icon.sea {
+      background: var(--sea);
+    }
+
+    .icon.blue {
+      background: var(--blue);
+    }
+
+    .icon.amber {
+      background: var(--amber);
+    }
+
+    .icon.coral {
+      background: var(--coral);
+    }
+
+    .feature h3 {
+      margin: 0 0 8px;
+      color: var(--deep);
+      font-size: 1.08rem;
+    }
+
+    .feature p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .data-band {
+      background: var(--deep);
+      color: var(--white);
+    }
+
+    .data-band section {
+      padding: 68px 0;
+    }
+
+    .data-band .section-head h2,
+    .data-band .section-head p {
+      color: var(--white);
+    }
+
+    .source-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .source {
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 22px;
+    }
+
+    .source h3 {
+      margin: 0 0 8px;
+      color: #dbeafe;
+    }
+
+    .source p {
+      margin: 0;
+      color: #d1d8e6;
+    }
+
+    .tech-list {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .tech {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--white);
+      padding: 14px;
+      color: var(--deep);
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .repo {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .tree {
+      margin: 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #111827;
+      color: #dbeafe;
+      padding: 20px;
+      overflow-x: auto;
+      font-size: 0.92rem;
+      line-height: 1.65;
+    }
+
+    .note {
+      border-left: 5px solid var(--amber);
+      background: #fffbeb;
+      border-radius: 8px;
+      padding: 18px 20px;
+      color: #5f4514;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 28px 16px;
+      color: var(--muted);
+      text-align: center;
+      background: var(--white);
+    }
+
+    @media (max-width: 900px) {
+      .hero-inner,
+      .repo {
+        grid-template-columns: 1fr;
+      }
+
+      .phone {
+        margin: 0;
+      }
+
+      .feature-grid,
+      .tech-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 14px 0;
+      }
+
+      .navlinks {
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 4px;
+      }
+
+      .hero-inner {
+        min-height: auto;
+        padding: 42px 0;
+      }
+
+      .feature-grid,
+      .source-grid,
+      .tech-list {
+        grid-template-columns: 1fr;
+      }
+
+      section {
+        padding: 54px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="nav" aria-label="主要導覽">
+      <a class="brand" href="#top">
+        <img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" alt="App 圖示">
+        <span>智慧海象船班 App</span>
+      </a>
+      <div class="navlinks">
+        <a href="#features">功能</a>
+        <a href="#data">資料來源</a>
+        <a href="#tech">技術</a>
+        <a href="#repo">專案結構</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <div class="hero">
+      <div class="hero-inner">
+        <div>
+          <p class="eyebrow">114-2 APP 開發期末專題</p>
+          <h1>智慧海象船班搭乘指南與停航通知 App</h1>
+          <p class="lead">
+            整合即時港口海況與航港船班資訊，讓旅客在出發前快速掌握浪高、風速、海溫、潮位與船班狀態，降低白跑港口或錯過異動公告的風險。
+          </p>
+          <div class="actions">
+            <a class="button primary" href="#features">查看功能</a>
+            <a class="button" href="README.md">閱讀專案 README</a>
+          </div>
+        </div>
+
+        <aside class="phone" aria-label="App 介面示意">
+          <div class="phone-top"></div>
+          <div class="screen">
+            <div class="status-card">
+              <div class="risk">
+                <strong>今日搭乘提醒</strong>
+                <span class="badge">正常</span>
+              </div>
+              <div class="metric-grid">
+                <div class="metric">
+                  <span>浪高</span>
+                  <b>0.8 m</b>
+                </div>
+                <div class="metric">
+                  <span>風速</span>
+                  <b>4.2 m/s</b>
+                </div>
+                <div class="metric">
+                  <span>海溫</span>
+                  <b>27.1°C</b>
+                </div>
+                <div class="metric">
+                  <span>潮位</span>
+                  <b>平穩</b>
+                </div>
+              </div>
+              <div class="schedule-list">
+                <div class="schedule-item">
+                  <span>港口 A → 港口 B</span>
+                  <em>開航</em>
+                </div>
+                <div class="schedule-item">
+                  <span>最新資料更新</span>
+                  <em>即時</em>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <section id="features">
+      <div class="section-head">
+        <h2>為搭船前的判斷而設計</h2>
+        <p>把分散的海象與船班資訊整理成容易閱讀的行動介面，讓使用者不用來回切換多個網站。</p>
+      </div>
+      <div class="feature-grid">
+        <article class="feature">
+          <div class="icon sea">浪</div>
+          <h3>即時海況觀測</h3>
+          <p>呈現測站位置、浪高、風速、風向、海溫、潮位與觀測時間，協助使用者掌握港口現況。</p>
+        </article>
+        <article class="feature">
+          <div class="icon blue">船</div>
+          <h3>船班狀態查詢</h3>
+          <p>整合航港船班資訊，提供開航、停航、延誤或未明等狀態，支援快速搜尋。</p>
+        </article>
+        <article class="feature">
+          <div class="icon amber">警</div>
+          <h3>搭乘風險提醒</h3>
+          <p>依據海象與船班狀態提供直覺化提醒，讓旅客出門前就能做出更穩妥的決策。</p>
+        </article>
+        <article class="feature">
+          <div class="icon coral">搜</div>
+          <h3>測站與船班搜尋</h3>
+          <p>可依照港口、測站或航線關鍵字搜尋，減少使用者在大量資料中尋找的時間。</p>
+        </article>
+        <article class="feature">
+          <div class="icon sea">月</div>
+          <h3>深色與淺色模式</h3>
+          <p>支援不同使用情境，無論白天戶外查詢或夜間查看資訊，都能保持舒適閱讀。</p>
+        </article>
+        <article class="feature">
+          <div class="icon blue">更</div>
+          <h3>即時重新整理</h3>
+          <p>提供手動更新功能，讓使用者能在出發前再次確認最新海況與船班資料。</p>
+        </article>
+      </div>
+    </section>
+
+    <div class="data-band" id="data">
+      <section>
+        <div class="section-head">
+          <h2>資料來源</h2>
+          <p>App 以開放資料與交通資料為基礎，將專業資料轉換成旅客能快速理解的資訊。</p>
+        </div>
+        <div class="source-grid">
+          <article class="source">
+            <h3>中央氣象署 Open Data</h3>
+            <p>使用波浪觀測、風速、風向、海溫與潮位等海象資料，建立港口海況資訊。</p>
+          </article>
+          <article class="source">
+            <h3>TDX 運輸資料流通服務</h3>
+            <p>使用航港船班與交通資訊，協助呈現即時船班狀態與搭乘動態。</p>
+          </article>
+        </div>
+      </section>
+    </div>
+
+    <section id="tech">
+      <div class="section-head">
+        <h2>使用技術</h2>
+        <p>本專題以 Android 原生開發為主，搭配網路 API 串接與清楚的 XML 介面配置。</p>
+      </div>
+      <div class="tech-list" aria-label="技術列表">
+        <div class="tech">Android Studio</div>
+        <div class="tech">Java / Kotlin</div>
+        <div class="tech">XML Layout</div>
+        <div class="tech">Retrofit / OkHttp</div>
+        <div class="tech">Gradle Kotlin DSL</div>
+      </div>
+    </section>
+
+    <section id="repo">
+      <div class="repo">
+        <div>
+          <div class="section-head">
+            <h2>GitHub 專案結構</h2>
+            <p>已依照課程模板整理，包含 App 原始碼、提案、個人題目探索、報告與投影片。</p>
+          </div>
+          <div class="note">
+            Android App 主程式位於 <strong>app/src/main/java/com/example/MainActivity.java</strong>，主要資料類別與 API Service 也放在同一個 package 中。
+          </div>
+        </div>
+        <pre class="tree"><code>
+
+├── README.md                 
+├── build.gradle.kts          
+├── settings.gradle.kts       
+├── gradle/                   
+├── gradlew / gradlew.bat     
+├── proposal/                 
+│   └── proposal.md
+├── my-topics/               
+│   ├── topic_C112181102.md
+│   ├── topic_C112181103.md
+│   └── topic_C112181144.md
+├── app/                      
+│   ├── src/
+│   ├── build.gradle.kts
+│   └── proguard-rules.pro
+├── backend/                  
+│   └── README.md
+└── docs/                    
+    ├── report.md
+    └── slides.pdf
+        </code></pre>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>智慧海象船班搭乘指南與停航通知 App - 114-2 APP 開發期末專題</span>
+  </footer>
+</body>
+</html>
