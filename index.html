@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>智慧海象船班搭乘指南與停航通知 APP</title>
+  <title>智慧海象船班搭乘指南與停航通知 App</title>
   <style>
     :root {
       --ink: #172033;
@@ -394,6 +394,59 @@
       color: #d1d8e6;
     }
 
+    .visual-grid {
+      display: grid;
+      gap: 28px;
+    }
+
+    .visual-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--white);
+      overflow: hidden;
+      box-shadow: 0 14px 34px rgba(23, 32, 51, 0.08);
+    }
+
+    .visual-copy {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 22px 24px 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .visual-copy h3 {
+      margin: 0 0 6px;
+      color: var(--deep);
+      font-size: 1.25rem;
+    }
+
+    .visual-copy p {
+      max-width: 720px;
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .visual-index {
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 8px;
+      background: var(--deep);
+      color: var(--white);
+      font-weight: 900;
+    }
+
+    .visual-card img {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: var(--white);
+    }
+
     .tech-list {
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -460,6 +513,10 @@
       .tech-list {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
+
+      .visual-copy {
+        flex-direction: column-reverse;
+      }
     }
 
     @media (max-width: 640px) {
@@ -489,6 +546,10 @@
       section {
         padding: 54px 0;
       }
+
+      .visual-copy {
+        padding: 18px;
+      }
     }
   </style>
 </head>
@@ -496,10 +557,12 @@
   <header class="topbar">
     <nav class="nav" aria-label="主要導覽">
       <a class="brand" href="#top">
+        <img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" alt="App 圖示">
         <span>智慧海象船班 App</span>
       </a>
       <div class="navlinks">
         <a href="#features">功能</a>
+        <a href="#visuals">圖表</a>
         <a href="#data">資料來源</a>
         <a href="#tech">技術</a>
         <a href="#repo">專案結構</a>
@@ -603,6 +666,47 @@
       </div>
     </section>
 
+    <section id="visuals">
+      <div class="section-head">
+        <h2>專題圖表</h2>
+        <p>以下依序呈現系統功能圖、使用情境圖與市場分析表，對應期末報告與發表內容。</p>
+      </div>
+      <div class="visual-grid">
+        <article class="visual-card">
+          <div class="visual-copy">
+            <div>
+              <h3>功能圖</h3>
+              <p>說明 App 功能模組、海況查詢、船班查詢、停航風險分析與旅客提醒之間的資料流程。</p>
+            </div>
+            <span class="visual-index">01</span>
+          </div>
+          <img src="assets/function-diagram.png" alt="智慧海象船班決策與停航通報 App 功能圖">
+        </article>
+
+        <article class="visual-card">
+          <div class="visual-copy">
+            <div>
+              <h3>使用情境圖</h3>
+              <p>呈現旅客在搭船前查詢海況與船班資訊，並依據停航判斷安排出發行程的使用流程。</p>
+            </div>
+            <span class="visual-index">02</span>
+          </div>
+          <img src="assets/scenario.jpg" alt="智慧海象船班決策與停航通報 App 使用情境圖">
+        </article>
+
+        <article class="visual-card">
+          <div class="visual-copy">
+            <div>
+              <h3>市場分析表</h3>
+              <p>比較中央氣象署海況查詢、航港局船班資訊系統、TDX 運輸資料服務與本研究 App 的功能差異。</p>
+            </div>
+            <span class="visual-index">03</span>
+          </div>
+          <img src="assets/market-analysis.png" alt="市場調查比較表">
+        </article>
+      </div>
+    </section>
+
     <div class="data-band" id="data">
       <section>
         <div class="section-head">
@@ -648,7 +752,7 @@
           </div>
         </div>
         <pre class="tree"><code>
-114-2_APP-G08/
+
 ├── README.md                 
 ├── build.gradle.kts          
 ├── settings.gradle.kts       
